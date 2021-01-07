@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace InvestigateDelegate
 {
@@ -42,6 +43,25 @@ namespace InvestigateDelegate
         private string methodStr(int x,int y)
         {
             return (x + y).ToString();
+        }
+
+
+        //　デリゲートトライ2用
+        delegate string getCounterString(string  _comment);
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            clean();
+            getCounterString deleTry = waitAMinute;
+            deleTry("フォーム上のオブジェクトに書き込めるか");
+            listBox1.Items.Add("ボタン2の処理終了");
+        }
+
+        private string waitAMinute(string _content)
+        {
+            Thread.Sleep(2000);
+            listBox1.Items.Add(_content);  //フォーム上のオブジェクトに書けるかの調査。
+            return _content;
         }
     }
 }
