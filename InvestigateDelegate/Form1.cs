@@ -53,15 +53,27 @@ namespace InvestigateDelegate
         {
             clean();
             getCounterString deleTry = waitAMinute;
-            deleTry("フォーム上のオブジェクトに書き込めるか");
+            var retIAsyncResult = deleTry.BeginInvoke("フォーム上のオブジェクトに書き込めるか", null, null);  //第2，3引数と取りあえずNullで処理する。
+            deleTry.EndInvoke(retIAsyncResult);  //リターンされるまで待つ。
             listBox1.Items.Add("ボタン2の処理終了");
         }
 
         private string waitAMinute(string _content)
         {
             Thread.Sleep(2000);
-            listBox1.Items.Add(_content);  //フォーム上のオブジェクトに書けるかの調査。
+            if (this.InvokeRequired)
+                this.Invoke(new setListBox(setList),_content);
+            else
+                listBox1.Items.Add(_content);  //フォーム上のオブジェクトに書けるかの調査。
             return _content;
         }
+
+        private delegate void setListBox(string _str);
+        private void setList(string _str)
+        {
+            listBox1.Items.Add(_str);
+        }
+            
+
     }
 }
